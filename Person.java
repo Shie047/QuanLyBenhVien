@@ -1,11 +1,9 @@
 public abstract class Person {
     protected String name;
     protected int age;
-    protected String gender;
 
-    public Person(int age, String gender, String name) {
+    public Person(int age, String name) {
         this.age = age;
-        this.gender = gender;
         this.name = name;
     }
 
@@ -17,13 +15,6 @@ public abstract class Person {
         this.age = age;
     }
 
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
 
     public String getName() {
         return name;
