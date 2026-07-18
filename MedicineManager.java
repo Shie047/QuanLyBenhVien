@@ -1,129 +1,102 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MedicineManager implements IManager<Medicine> {
     private ArrayList<Medicine> listMedicines = new ArrayList<>();
     private final String FILE_NAME = "medicines.txt";
 
     @Override
-    public void add(Medicine medicine) {
-        try {
-            if (medicine == null) {
-                System.out.println("Thuốc không hợp lệ.");
-                return;
-            }
-            if (getMedicine(medicine.getCodeMedicine()) != null) {
-                System.out.println("Mã thuốc " + medicine.getCodeMedicine() + " đã tồn tại");
-                return;
-            }
-            listMedicines.add(medicine);
-            System.out.println("Đã thêm thuốc thành công: " + medicine.getCodeMedicine());
-        } catch (Exception e) {
-            System.out.println("Đã xảy ra lỗi khi thêm thuốc: " + e.getMessage());
+    public String add(Medicine medicine) {
+        if (medicine == null) {
+            return "Thuốc không hợp lệ.";
         }
+        if (getMedicine(medicine.getIdMedicine()) != null) {
+            return "Mã thuốc " + medicine.getIdMedicine() + " đã tồn tại";
+        }
+        listMedicines.add(medicine);
+        return "Đã thêm thuốc thành công: " + medicine.getIdMedicine();
     }
 
     public Medicine getMedicine(String codeMedicine) {
-        try {
-            if (codeMedicine == null || codeMedicine.trim().isEmpty()) {
-                return null;
-            }
-            for (Medicine med : listMedicines) {
-                if (med.getCodeMedicine().equals(codeMedicine)) {
-                    return med;
-                }
-            }
-            return null;
-        } catch (Exception e) {
-            System.out.println("Lỗi dữ liệu: " + e.getMessage());
+        if (codeMedicine == null || codeMedicine.trim().isEmpty()) {
             return null;
         }
+        for (Medicine med : listMedicines) {
+            if (med.getIdMedicine().equals(codeMedicine)) {
+                return med;
+            }
+        }
+        return null;
     }
 
     @Override
-    public void update(String codeMedicine, Medicine newMedicine) {
-        try {
-            if (newMedicine == null) {
-                System.out.println("Dữ liệu không hợp lệ.");
-                return;
-            }
-            for (int i = 0; i < listMedicines.size(); i++) {
-                if (listMedicines.get(i).getCodeMedicine().equals(codeMedicine)) {
-                    listMedicines.set(i, newMedicine);
-                    System.out.println("Đã cập nhật thông tin thành công!");
-                    return;
-                }
-            }
-            System.out.println("Không tìm thấy thuốc có mã " + codeMedicine);
-        } catch (Exception e) {
-            System.out.println("Lỗi khi cập nhật: " + e.getMessage());
+    public String update(String codeMedicine, Medicine newMedicine) {
+        if (newMedicine == null) {
+            return "Dữ liệu không hợp lệ.";
         }
+        for (int i = 0; i < listMedicines.size(); i++) {
+            if (listMedicines.get(i).getIdMedicine().equals(codeMedicine)) {
+                listMedicines.set(i, newMedicine);
+                return "Đã cập nhật thông tin thành công!";
+            }
+        }
+        return "Không tìm thấy thuốc có mã " + codeMedicine;
     }
 
     @Override
-    public void delete(String codeMedicine) {
-        try {
-            if (codeMedicine == null || codeMedicine.trim().isEmpty()) {
-                System.out.println("Mã thuốc không hợp lệ.");
-                return;
-            }
-            for (int i = 0; i < listMedicines.size(); i++) {
-                if (listMedicines.get(i).getCodeMedicine().equals(codeMedicine)) {
-                    listMedicines.remove(i);
-                    System.out.println("Đã xóa thuốc " + codeMedicine);
-                    return;
-                }
-            }
-            System.out.println("Không tìm thấy thuốc có mã " + codeMedicine + " để xóa.");
-        } catch (Exception e) {
-            System.out.println("Lỗi khi xóa: " + e.getMessage());
+    public String delete(String codeMedicine) {
+        if (codeMedicine == null || codeMedicine.trim().isEmpty()) {
+            return "Mã thuốc không hợp lệ.";
         }
+        for (int i = 0; i < listMedicines.size(); i++) {
+            if (listMedicines.get(i).getIdMedicine().equals(codeMedicine)) {
+                listMedicines.remove(i);
+                return "Đã xóa thuốc " + codeMedicine;
+            }
+        }
+        return "Không tìm thấy thuốc có mã " + codeMedicine + " để xóa.";
     }
 
     @Override
-    public void showAll() {
-        try {
-            if (listMedicines.isEmpty()) {
-                System.out.println("Danh sách trống.");
-                return;
-            }
-            System.out.println("DANH SÁCH THUỐC");
-            for (Medicine med : listMedicines) {
-                System.out.println(med.showInfo());
-            }
-        } catch (Exception e) {
-            System.out.println("Lỗi khi hiển thị danh sách: " + e.getMessage());
-        }
+    public List<Medicine> getAll() {
+        return listMedicines;
     }
 
-    public void saveFile() {
+    public String saveFile() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME))) {
             for (Medicine m : listMedicines) {
                 bw.write(m.toFileLine());
                 bw.newLine();
             }
-            System.out.println("Đã lưu dữ liệu thuốc thành công.");
+            return "Đã lưu dữ liệu thuốc thành công.";
         } catch (Exception e) {
-            System.out.println("Lỗi khi lưu file: " + e.getMessage());
+            return "Lỗi khi lưu file: " + e.getMessage();
         }
     }
 
-    public void loadFile() {
+    public String loadFile() {
         File file = new File(FILE_NAME);
-        if (!file.exists()) return;
+        if (!file.exists()) {
+            return null;
+        }
+
+        StringBuilder result = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
             listMedicines.clear();
             while ((line = br.readLine()) != null) {
-
                 Medicine m = Medicine.fromFileLine(line);
                 if (m != null) {
                     listMedicines.add(m);
+                } else if (!line.trim().isEmpty()) {
+                    result.append("dữ liệu thuốc không hợp lệ: ").append(line).append("\n");
                 }
             }
-            System.out.println("Đã tải dữ liệu thuốc từ file thành công.");
+            result.append("Đã tải dữ liệu thành công.");
+            return result.toString();
         } catch (Exception e) {
-            System.out.println("Lỗi khi đọc file: " + e.getMessage());
+            return "Lỗi khi đọc file: " + e.getMessage();
         }
     }
 }
