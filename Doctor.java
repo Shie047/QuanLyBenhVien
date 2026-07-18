@@ -31,7 +31,7 @@ public class Doctor extends Person {
     }
 
     @Override
-    public void showInfo() {
-        System.out.println("Mã Bác Sĩ:" + idDoctor + " Tên: " + getName() + " Tuổi: " + getAge() + " Khoa: " + department);
+    public String showInfo() {
+        return "Mã Bác Sĩ:" + idDoctor + " Tên: " + getName() + " Tuổi: " + getAge() + " Khoa: " + department;
     }
 }
