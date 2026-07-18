@@ -55,20 +55,20 @@ public class DoctorManager implements IManager<Doctor> {
     }
 
     @Override
-    public void delete(String IDDoctor) {
+    public void delete(String IdDoctor) {
         try {
-            if (IDDoctor == null || IDDoctor.trim().isEmpty()) {
+            if (IdDoctor == null || IdDoctor.trim().isEmpty()) {
                 System.out.println("Mã bác sĩ không hợp lệ.");
                 return;
             }
             for (int i = 0; i < listDoctors.size(); i++) {
-                if (listDoctors.get(i).getIdDoctor().equals(IDDoctor)) {
+                if (listDoctors.get(i).getIdDoctor().equals(IdDoctor)) {
                     listDoctors.remove(i);
-                    System.out.println("Đã xóa bác sĩ " + IDDoctor);
+                    System.out.println("Đã xóa bác sĩ " + IdDoctor);
                     return;
                 }
             }
-            System.out.println("Không tìm thấy bác sĩ có mã " + IDDoctor + " để xóa.");
+            System.out.println("Không tìm thấy bác sĩ có mã " + IdDoctor + " để xóa.");
         } catch (Exception e) {
             System.out.println("Lỗi khi xóa bác sĩ: " + e.getMessage());
         }
