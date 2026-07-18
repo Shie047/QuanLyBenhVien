@@ -1,20 +1,22 @@
-class Doctor extends Person {
+import java.io.Serializable;
+
+public class Doctor extends Person implements Serializable {
     private String idDoctor;
     private String department;
-    private static int ID = 1;
+    private static int idCounter = 1;
 
-    public Doctor(int age, String name,String department) {
+    public Doctor(int age, String name, String department) {
         super(age, name);
-        this.idDoctor = "BS" + ID;
-        this.department=department;
-        ID++;
+        this.idDoctor = "BS" + idCounter;
+        this.department = department;
+        idCounter++;
     }
 
     public String getIdDoctor() {
         return idDoctor;
     }
 
-    public void setIDDoctor(String idDoctor) {
+    public void setIdDoctor(String idDoctor) {
         this.idDoctor = idDoctor;
     }
 
@@ -26,9 +28,12 @@ class Doctor extends Person {
         this.department = department;
     }
 
-    @Override
-    public void showInfo() {
-        System.out.println( idDoctor + " \nTên: " + name + " \nTuổi: " + age + " \nKhoa: " + department);
+    public static void setIdCounter(int maxId) {
+        idCounter = maxId + 1;
     }
 
+    @Override
+    public void showInfo() {
+        System.out.println(idDoctor + " \nTên: " + getName() + " \nTuổi: " + getAge() + " \nKhoa: " + department);
+    }
 }
