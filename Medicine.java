@@ -1,20 +1,32 @@
 public class Medicine {
 
-    private final String codeMedicine;
+    private final String idMedicine;
     private String name;
     private double unitPrice;
     private int quantity;
 
-    public Medicine(String codeMedicine, String name, double unitPrice, int quantity) {
-        this.codeMedicine = codeMedicine;
+    public Medicine(String idMedicine, String name, double unitPrice, int quantity) {
+        if (idMedicine == null || idMedicine.trim().isEmpty()) {
+            throw new IllegalArgumentException("Mã thuốc không được để trống.");
+        }
+        if (idMedicine.contains(",") || (name != null && name.contains(","))) {
+            throw new IllegalArgumentException("Mã/Tên thuốc không được chứa dấu phẩy");
+        }
+        this.idMedicine = idMedicine;
         this.name = name;
         this.unitPrice = unitPrice;
         this.quantity = quantity;
     }
 
-    // Getter
-    public String getCodeMedicine() {
-        return codeMedicine;
+    public Medicine(Medicine other) {
+        this.idMedicine = other.idMedicine;
+        this.name = other.name;
+        this.unitPrice = other.unitPrice;
+        this.quantity = other.quantity;
+    }
+
+    public String getIdMedicine() {
+        return idMedicine;
     }
 
     public String getName() {
@@ -29,50 +41,56 @@ public class Medicine {
         return quantity;
     }
 
-    // Setter
     public void setName(String name) {
+        if (name != null && name.contains(DELIMITER)) {
+            throw new IllegalArgumentException("Tên thuốc không được chứa ký tự đặc biệt");
+        }
         this.name = name;
     }
 
     public void setUnitPrice(double unitPrice) {
+        if (unitPrice <= 0) {
+            throw new IllegalArgumentException("Giá thuốc phải lớn hơn 0.");
+        }
         this.unitPrice = unitPrice;
     }
 
     public void setQuantity(int quantity) {
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("Số lượng phải lớn hơn 0.");
+        }
         this.quantity = quantity;
     }
 
-    // Hiển thị thông tin
     public String showInfo() {
-        return "Code: " + codeMedicine
+        return "ID: " + idMedicine
                 + " | Name: " + name
                 + " | Price: " + unitPrice
                 + " | Quantity: " + quantity;
     }
 
-    // Lưu xuống file
     public String toFileLine() {
-        return codeMedicine + "|"
-                + name + "|"
-                + unitPrice + "|"
+        return idMedicine + DELIMITER
+                + name + DELIMITER
+                + unitPrice + DELIMITER
                 + quantity;
     }
 
-    // Đọc từ file
     public static Medicine fromFileLine(String line) {
-
-        String[] parts = line.split("\\|");
-
-        if (parts.length != 4) {
+        try {
+            String[] parts = line.split(DELIMITER);
+            if (parts.length != 4) {
+                return null;
+            }
+            return new Medicine(
+                    parts[0],
+                    parts[1],
+                    Double.parseDouble(parts[2]),
+                    Integer.parseInt(parts[3])
+            );
+        } catch (IllegalArgumentException e) {
             return null;
         }
-
-        return new Medicine(
-                parts[0],
-                parts[1],
-                Double.parseDouble(parts[2]),
-                Integer.parseInt(parts[3])
-        );
     }
 
     @Override
