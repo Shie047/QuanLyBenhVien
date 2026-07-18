@@ -1,6 +1,6 @@
 public interface IManager<T> {
-    void Add(T Object);
-    void Update(String MA, T NewObject);
-    void Delete(String MA);
-    void ShowAll();
+    void add(T Object);
+    void update(String MA, T NewObject);
+    void delete(String MA);
+    void showAll();
 }
