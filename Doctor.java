@@ -1,6 +1,4 @@
-import java.io.Serializable;
-
-public class Doctor extends Person implements Serializable {
+public class Doctor extends Person {
     private String idDoctor;
     private String department;
     private static int idCounter = 1;
@@ -34,6 +32,6 @@ public class Doctor extends Person implements Serializable {
 
     @Override
     public void showInfo() {
-        System.out.println(idDoctor + " \nTên: " + getName() + " \nTuổi: " + getAge() + " \nKhoa: " + department);
+        System.out.println("Mã Bác Sĩ:" + idDoctor + " Tên: " + getName() + " Tuổi: " + getAge() + " Khoa: " + department);
     }
 }
