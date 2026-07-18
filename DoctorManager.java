@@ -4,26 +4,26 @@ public class DoctorManager implements IManager<Doctor> {
     private ArrayList<Doctor> listDoctors = new ArrayList<>();
 
     @Override
-    public void Add(Doctor doctor) {
+    public void add(Doctor doctor) {
         try {
             if (doctor == null) {
                 System.out.println("Đối tượng bác sĩ không hợp lệ.");
                 return;
             }
             listDoctors.add(doctor);
-            System.out.println("Đã thêm bác sĩ thành công " + doctor.getMaBS());
+            System.out.println("Đã thêm bác sĩ thành công " + doctor.getIdDoctor());
         } catch (Exception e) {
             System.out.println("Đã xảy ra lỗi khi thêm " + e.getMessage());
         }
     }
 
-    public Doctor getDoctor(String maBS) {
+    public Doctor getDoctor(String idDoctor) {
         try {
-            if (maBS == null || maBS.trim().isEmpty()) {
+            if (idDoctor == null || idDoctor.trim().isEmpty()) {
                 return null;
             }
             for (Doctor doctor : listDoctors) {
-                if (doctor.getMaBS().equals(maBS)) {
+                if (doctor.getIdDoctor().equals(idDoctor)) {
                     return doctor;
                 }
             }
@@ -35,47 +35,47 @@ public class DoctorManager implements IManager<Doctor> {
     }
 
     @Override
-    public void Update(String maBS, Doctor newDoctor) {
+    public void update(String idDoctor, Doctor newDoctor) {
         try {
             if (newDoctor == null) {
                 System.out.println("Dữ liệu cập nhật không hợp lệ.");
                 return;
             }
             for (int i = 0; i < listDoctors.size(); i++) {
-                if (listDoctors.get(i).getMaBS().equals(maBS)) {
+                if (listDoctors.get(i).getIdDoctor().equals(idDoctor)) {
                     listDoctors.set(i, newDoctor);
                     System.out.println("Đã cập nhật thông tin thành công!");
                     return;
                 }
             }
-            System.out.println("Không tìm thấy bác sĩ có mã " + maBS);
+            System.out.println("Không tìm thấy bác sĩ có mã " + idDoctor);
         } catch (Exception e) {
             System.out.println("Lỗi hệ thống khi cập nhật thông tin: " + e.getMessage());
         }
     }
 
     @Override
-    public void Delete(String maBS) {
+    public void delete(String IdDoctor) {
         try {
-            if (maBS == null || maBS.trim().isEmpty()) {
+            if (IdDoctor == null || IdDoctor.trim().isEmpty()) {
                 System.out.println("Mã bác sĩ không hợp lệ.");
                 return;
             }
             for (int i = 0; i < listDoctors.size(); i++) {
-                if (listDoctors.get(i).getMaBS().equals(maBS)) {
+                if (listDoctors.get(i).getIdDoctor().equals(IdDoctor)) {
                     listDoctors.remove(i);
-                    System.out.println("Đã xóa bác sĩ " + maBS);
+                    System.out.println("Đã xóa bác sĩ " + IdDoctor);
                     return;
                 }
             }
-            System.out.println("Không tìm thấy bác sĩ có mã " + maBS + " để xóa.");
+            System.out.println("Không tìm thấy bác sĩ có mã " + IdDoctor + " để xóa.");
         } catch (Exception e) {
             System.out.println("Lỗi khi xóa bác sĩ: " + e.getMessage());
         }
     }
 
     @Override
-    public void ShowAll() {
+    public void showAll() {
         try {
             if (listDoctors.isEmpty()) {
                 System.out.println("Danh sách trống");
