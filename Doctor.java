@@ -1,33 +1,34 @@
 class Doctor extends Person {
-    private String maBS;
-    private String Department;
+    private String idDoctor;
+    private String department;
     private static int ID = 1;
 
-    public Doctor(int age, String name,String Department) {
+    public Doctor(int age, String name,String department) {
         super(age, name);
-        this.maBS = "BS" + ID;
-        this.Department=Department;
+        this.idDoctor = "BS" + ID;
+        this.department=department;
         ID++;
     }
 
-    public String getMaBS() {
-        return maBS;
+    public String getIdDoctor() {
+        return idDoctor;
     }
-    public void setMaBS(String maBS) {
-        this.maBS = maBS;
+
+    public void setIDDoctor(String idDoctor) {
+        this.idDoctor = idDoctor;
     }
 
     public String getDepartment() {
-        return Department;
+        return department;
     }
 
     public void setDepartment(String department) {
-        Department = department;
+        this.department = department;
     }
 
     @Override
     public void showInfo() {
-        System.out.println( maBS + " \nTên: " + name + " \nTuổi: " + age + " \nKhoa: " + Department);
+        System.out.println( idDoctor + " \nTên: " + name + " \nTuổi: " + age + " \nKhoa: " + department);
     }
 
 }
