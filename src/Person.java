@@ -25,8 +25,11 @@ public abstract class Person {
     public void setName(String name) {
         this.name = name;
     }
+
     public abstract String showInfo();
+
     @Override
     public String toString() {
         return showInfo();
-    }}
+    }
+}
