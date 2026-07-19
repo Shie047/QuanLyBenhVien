@@ -29,8 +29,4 @@ public abstract class Person {
     @Override
     public String toString() {
         return showInfo();
-    }
-}
-
-    public abstract void showInfo();
-}
+    }}
