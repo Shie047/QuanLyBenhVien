@@ -4,6 +4,7 @@ public class Medicine {
     private String name;
     private double unitPrice;
     private int quantity;
+    private static final String delimiter = ",";
 
     public Medicine(String idMedicine, String name, double unitPrice, int quantity) {
         if (idMedicine == null || idMedicine.trim().isEmpty()) {
