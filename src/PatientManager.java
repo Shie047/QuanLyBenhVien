@@ -2,10 +2,11 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PatientManager implements IManager<Patient>{
+public class PatientManager implements IManager<Patient> {
+
     private static final String FILE_PATH = "data/patient.txt";
 
-    private List<Patient> patientList;
+    private final List<Patient> patientList;
 
     public PatientManager() {
         patientList = new ArrayList<>();
@@ -13,74 +14,76 @@ public class PatientManager implements IManager<Patient>{
     }
 
     @Override
-    public void Add(Patient patient) {
+    public String add(Patient patient) {
+
+        if (patient == null) {
+            return "Patient is null.";
+        }
 
         if (findById(patient.getCodePatient()) != null) {
-            System.out.println("Ma benh nhan da ton tai!");
-            return;
+            return "Patient ID already exists.";
         }
 
         patientList.add(patient);
         saveToFile();
 
-        System.out.println("Them thanh cong!");
+        return "Patient added successfully.";
     }
 
     @Override
-    public void Update(String ma, Patient newPatient) {
+    public String update(String id, Patient newPatient) {
 
-        Patient patient = findById(ma);
+        Patient patient = findById(id);
 
         if (patient == null) {
-            System.out.println("Khong tim thay benh nhan!");
-            return;
+            return "Patient not found.";
         }
 
-        // Chỉ cập nhật triệu chứng
+        // Code bệnh nhân không được sửa
         patient.setSymptom(newPatient.getSymptom());
 
         saveToFile();
 
-        System.out.println("Cap nhat thanh cong!");
+        return "Patient updated successfully.";
     }
 
     @Override
-    public void Delete(String ma) {
+    public String delete(String id) {
 
-        Patient patient = findById(ma);
+        Patient patient = findById(id);
 
         if (patient == null) {
-            System.out.println("Khong tim thay benh nhan!");
-            return;
+            return "Patient not found.";
         }
 
         patientList.remove(patient);
 
         saveToFile();
 
-        System.out.println("Xoa thanh cong!");
+        return "Patient deleted successfully.";
     }
 
     @Override
-    public void ShowAll() {
+    public void showAll() {
 
         if (patientList.isEmpty()) {
-            System.out.println("Danh sach benh nhan rong!");
+            System.out.println("Patient list is empty.");
             return;
         }
 
         for (Patient patient : patientList) {
             System.out.println(patient.showInfo());
         }
+
     }
 
-    // tìm kiếm
+    // tìm
 
-    public Patient findById(String ma) {
+    public Patient findById(String id) {
 
         for (Patient patient : patientList) {
 
-            if (patient.getCodePatient().equalsIgnoreCase(ma)) {
+            if (patient.getCodePatient().equalsIgnoreCase(id)) {
                 return patient;
             }
 
@@ -91,7 +94,7 @@ public class PatientManager implements IManager<Patient>{
 
     // lưu file
 
-    private void saveToFile() {
+    private String saveToFile() {
 
         File folder = new File("data");
 
@@ -102,23 +105,29 @@ public class PatientManager implements IManager<Patient>{
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
 
             for (Patient patient : patientList) {
+
                 bw.write(patient.toFileLine());
                 bw.newLine();
+
             }
 
+            return "Saved successfully.";
+
         } catch (IOException e) {
-            System.out.println("Loi luu file!");
+
+            return "Save failed.";
+
         }
     }
 
-    //đọc file
+    // tải file
 
-    private void loadFromFile() {
+    private String loadFromFile() {
 
         File file = new File(FILE_PATH);
 
         if (!file.exists()) {
-            return;
+            return "File not found.";
         }
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
@@ -128,20 +137,28 @@ public class PatientManager implements IManager<Patient>{
             while ((line = br.readLine()) != null) {
 
                 if (!line.trim().isEmpty()) {
+
                     Patient patient = Patient.fromFileLine(line);
 
                     if (patient != null) {
                         patientList.add(patient);
                     }
+
                 }
+
             }
 
+            return "Loaded successfully.";
+
         } catch (IOException e) {
-            System.out.println("Loi doc file!");
+
+            return "Load failed.";
+
         }
     }
 
-    public List<Patient> getPatientList() {
+    public List<Patient> getAll() {
         return patientList;
     }
+
 }
