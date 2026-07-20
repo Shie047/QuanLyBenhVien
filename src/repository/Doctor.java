@@ -1,5 +1,5 @@
 package repository;
-public class gDoctor extends Person {
+public class Doctor extends Person {
     private String idDoctor;
     private String department;
     private static int idCounter = 1;
