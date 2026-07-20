@@ -6,131 +6,83 @@ public class PrescriptionManager implements IManager<Prescription> {
 
     private static final String FILE_PATH = "data/prescription.txt";
 
-    private List<Prescription> prescriptionList;
+    private final List<Prescription> prescriptionList;
 
-    private PatientManager patientManager;
-    private DoctorManager doctorManager;
-    private MedicineManager medicineManager;
-
-    public PrescriptionManager(PatientManager patientManager,
-                               DoctorManager doctorManager,
-                               MedicineManager medicineManager) {
-
-        this.patientManager = patientManager;
-        this.doctorManager = doctorManager;
-        this.medicineManager = medicineManager;
-
+    public PrescriptionManager() {
         prescriptionList = new ArrayList<>();
         loadFromFile();
     }
 
     @Override
-    public void Add(Prescription prescription) {
+    public String add(Prescription prescription) {
+
+        if (prescription == null) {
+            return "Prescription is null.";
+        }
 
         if (findById(prescription.getCodePrescription()) != null) {
-            System.out.println("Ma don thuoc da ton tai!");
-            return;
+            return "Prescription ID already exists.";
         }
 
         prescriptionList.add(prescription);
         saveToFile();
 
-        System.out.println("Them don thuoc thanh cong!");
+        return "Prescription added successfully.";
     }
 
     @Override
-    public void Update(String ma, Prescription newPrescription) {
+    public String update(String id, Prescription newPrescription) {
 
-        Prescription prescription = findById(ma);
+        Prescription prescription = findById(id);
 
         if (prescription == null) {
-            System.out.println("Khong tim thay don thuoc!");
-            return;
+            return "Prescription not found.";
         }
 
-        prescription.setPatient(newPrescription.getPatient());
-        prescription.setDoctor(newPrescription.getDoctor());
-        prescription.setMedicine(newPrescription.getMedicine());
-        prescription.setDate(newPrescription.getDate());
+        int index = prescriptionList.indexOf(prescription);
+
+        prescriptionList.set(index, newPrescription);
 
         saveToFile();
 
-        System.out.println("Cap nhat thanh cong!");
+        return "Prescription updated successfully.";
     }
 
     @Override
-    public void Add(Patient patient) {
+    public String delete(String id) {
 
-    }
-
-    @Override
-    public void Update(String ma, Patient newPatient) {
-
-    }
-
-    @Override
-    public void Delete(String ma) {
-
-        Prescription prescription = findById(ma);
+        Prescription prescription = findById(id);
 
         if (prescription == null) {
-            System.out.println("Khong tim thay don thuoc!");
-            return;
+            return "Prescription not found.";
         }
 
         prescriptionList.remove(prescription);
 
         saveToFile();
 
-        System.out.println("Xoa thanh cong!");
-    }
-
-    @Override
-    public void ShowAll() {
-
-        if (prescriptionList.isEmpty()) {
-            System.out.println("Danh sach don thuoc rong!");
-            return;
-        }
-
-        for (Prescription prescription : prescriptionList) {
-            System.out.println(prescription.showInfo());
-            System.out.println("--------------------------------");
-        }
-    }
-
-    @Override
-    public String add(Prescription Object) {
-        return "";
-    }
-
-    @Override
-    public String update(String MA, Prescription NewObject) {
-        return "";
-    }
-
-    @Override
-    public String delete(String MA) {
-        return "";
+        return "Prescription deleted successfully.";
     }
 
     @Override
     public void showAll() {
 
+        if (prescriptionList.isEmpty()) {
+            return;
+        }
+
+        for (Prescription prescription : prescriptionList) {
+            System.out.println(prescription.showInfo());
+        }
     }
 
-    @Override
-    public List<Medicine> getAll() {
-        return List.of();
-    }
+    // ================= FIND =================
 
-    // ================= TIM KIEM =================
-
-    public Prescription findById(String code) {
+    public Prescription findById(String id) {
 
         for (Prescription prescription : prescriptionList) {
 
-            if (prescription.getCodePrescription().equalsIgnoreCase(code)) {
+            if (prescription.getCodePrescription().equalsIgnoreCase(id)) {
                 return prescription;
             }
 
@@ -139,9 +91,9 @@ public class PrescriptionManager implements IManager<Prescription> {
         return null;
     }
 
-    // ================= LUU FILE =================
+    // ================= SAVE FILE =================
 
-    private void saveToFile() {
+    private String saveToFile() {
 
         File folder = new File("data");
 
@@ -158,21 +110,22 @@ public class PrescriptionManager implements IManager<Prescription> {
 
             }
 
+            return "Saved successfully.";
+
         } catch (IOException e) {
 
-            System.out.println("Loi luu file!");
-
+            return "Save failed.";
         }
     }
 
-    // ================= DOC FILE =================
+    // ================= LOAD FILE =================
 
-    private void loadFromFile() {
+    private String loadFromFile() {
 
         File file = new File(FILE_PATH);
 
         if (!file.exists()) {
-            return;
+            return "File not found.";
         }
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
@@ -184,31 +137,23 @@ public class PrescriptionManager implements IManager<Prescription> {
                 if (!line.trim().isEmpty()) {
 
                     Prescription prescription =
-                            Prescription.fromFileLine(
-                                    line,
-                                    patientManager,
-                                    doctorManager,
-                                    medicineManager
-                            );
+                            Prescription.fromFileLine(line);
 
                     if (prescription != null) {
                         prescriptionList.add(prescription);
                     }
-
                 }
-
             }
+
+            return "Loaded successfully.";
 
         } catch (IOException e) {
 
-            System.out.println("Loi doc file!");
-
+            return "Load failed.";
         }
-
     }
 
-    public List<Prescription> getPrescriptionList() {
+    public List<Prescription> getAll() {
         return prescriptionList;
     }
-
 }
