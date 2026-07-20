@@ -3,8 +3,8 @@ public class Patient extends Person {
     private final String codePatient;
     private String symptom;
 
-    public Patient(String codePatient, String name, int age, String sex, String symptom) {
-        super(name, age, sex);
+    public Patient(String codePatient, String name, int age, String symptom) {
+        super(age, name);
         this.codePatient = codePatient;
         this.symptom = symptom;
     }
@@ -28,7 +28,6 @@ public class Patient extends Person {
         return "Code: " + codePatient
                 + " | Name: " + getName()
                 + " | Age: " + getAge()
-                + " | Sex: " + getSex()
                 + " | Symptom: " + symptom;
     }
 
@@ -37,7 +36,6 @@ public class Patient extends Person {
         return codePatient + "|"
                 + getName() + "|"
                 + getAge() + "|"
-                + getSex() + "|"
                 + symptom;
     }
 
@@ -54,8 +52,7 @@ public class Patient extends Person {
                 parts[0],
                 parts[1],
                 Integer.parseInt(parts[2]),
-                parts[3],
-                parts[4]
+                parts[3]
         );
     }
 

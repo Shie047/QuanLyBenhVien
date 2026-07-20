@@ -39,7 +39,7 @@ public class PatientManager implements IManager<Patient> {
             return "Patient not found.";
         }
 
-        // Code bệnh nhân không được sửa
+        // Không cho sửa mã bệnh nhân
         patient.setSymptom(newPatient.getSymptom());
 
         saveToFile();
@@ -74,11 +74,9 @@ public class PatientManager implements IManager<Patient> {
         for (Patient patient : patientList) {
             System.out.println(patient.showInfo());
         }
-
     }
 
-    // tìm
-
+    // Tìm bệnh nhân theo ID
     public Patient findById(String id) {
 
         for (Patient patient : patientList) {
@@ -86,14 +84,12 @@ public class PatientManager implements IManager<Patient> {
             if (patient.getCodePatient().equalsIgnoreCase(id)) {
                 return patient;
             }
-
         }
 
         return null;
     }
 
-    // lưu file
-
+    // Lưu file
     private String saveToFile() {
 
         File folder = new File("data");
@@ -105,23 +101,18 @@ public class PatientManager implements IManager<Patient> {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
 
             for (Patient patient : patientList) {
-
                 bw.write(patient.toFileLine());
                 bw.newLine();
-
             }
 
             return "Saved successfully.";
 
         } catch (IOException e) {
-
             return "Save failed.";
-
         }
     }
 
-    // tải file
-
+    // Đọc file
     private String loadFromFile() {
 
         File file = new File(FILE_PATH);
@@ -143,22 +134,17 @@ public class PatientManager implements IManager<Patient> {
                     if (patient != null) {
                         patientList.add(patient);
                     }
-
                 }
-
             }
 
             return "Loaded successfully.";
 
         } catch (IOException e) {
-
             return "Load failed.";
-
         }
     }
 
     public List<Patient> getAll() {
         return patientList;
     }
-
 }
