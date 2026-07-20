@@ -1,9 +1,9 @@
 public abstract class Person {
-    private String name;
-    private int age;
+    protected String name;
+    protected int age;
 
     public Person(int age, String name) {
-        setAge(age);
+        this.age = age;
         this.name = name;
     }
 
@@ -12,9 +12,6 @@ public abstract class Person {
     }
 
     public void setAge(int age) {
-        if (age <= 0) {
-            throw new IllegalArgumentException("Tuổi không hợp lệ: " + age);
-        }
         this.age = age;
     }
 
