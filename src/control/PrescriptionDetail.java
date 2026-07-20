@@ -1,4 +1,5 @@
-package repository;
+package control;
+import repository.*;
 public class PrescriptionDetail {
 
     private Medicine medicine;
@@ -52,7 +53,7 @@ public class PrescriptionDetail {
 
     public String toFileLine() {
 
-        return medicine.getCodeMedicine() + "|"
+        return medicine.getIdMedicine() + "|"
                 + quantity + "|"
                 + dosage;
     }
@@ -68,7 +69,7 @@ public class PrescriptionDetail {
             return null;
         }
 
-        Medicine medicine = medicineManager.findById(parts[0]);
+        Medicine medicine = PrescriptionManager.findById(parts[0]).getMedicine();
 
         if (medicine == null) {
             return null;

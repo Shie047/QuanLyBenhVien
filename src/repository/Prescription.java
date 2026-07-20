@@ -1,19 +1,19 @@
 package repository;
 public class Prescription {
 
-    private final String codePrescription;
+    private final String idPrescription;
     private Patient patient;
     private Doctor doctor;
     private Medicine medicine;
     private String date;
 
-    public Prescription(String codePrescription,
+    public Prescription(String idPrescription,
                         Patient patient,
                         Doctor doctor,
                         Medicine medicine,
                         String date) {
 
-        this.codePrescription = codePrescription;
+        this.idPrescription = idPrescription;
         this.patient = patient;
         this.doctor = doctor;
         this.medicine = medicine;
@@ -26,8 +26,8 @@ public class Prescription {
 
     // Getter
 
-    public String getCodePrescription() {
-        return codePrescription;
+    public String getIdPrescription() {
+        return idPrescription;
     }
 
     public Patient getPatient() {
@@ -68,7 +68,7 @@ public class Prescription {
 
     public String showInfo() {
 
-        return "Prescription ID: " + codePrescription
+        return "Prescription ID: " + idPrescription
                 + "\nPatient: " + patient.getName()
                 + "\nDoctor: " + doctor.getName()
                 + "\nMedicine: " + medicine.getName()
@@ -79,10 +79,10 @@ public class Prescription {
 
     public String toFileLine() {
 
-        return codePrescription + "|"
-                + patient.getCodePatient() + "|"
+        return idPrescription + "|"
+                + patient.getIdPatient() + "|"
                 + doctor.getIdDoctor() + "|"
-                + medicine.getCodeMedicine() + "|"
+                + medicine.getIdMedicine() + "|"
                 + date;
     }
 

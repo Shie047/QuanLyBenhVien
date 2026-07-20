@@ -21,7 +21,7 @@ public class PatientManager implements IManager<Patient> {
             return "Patient is null.";
         }
 
-        if (findById(patient.getCodePatient()) != null) {
+        if (findById(patient.getIdPatient()) != null) {
             return "Patient ID already exists.";
         }
 
@@ -64,25 +64,14 @@ public class PatientManager implements IManager<Patient> {
         return "Patient deleted successfully.";
     }
 
-    @Override
-    public void showAll() {
 
-        if (patientList.isEmpty()) {
-            System.out.println("Patient list is empty.");
-            return;
-        }
-
-        for (Patient patient : patientList) {
-            System.out.println(patient.showInfo());
-        }
-    }
 
     // Tìm bệnh nhân theo ID
     public Patient findById(String id) {
 
         for (Patient patient : patientList) {
 
-            if (patient.getCodePatient().equalsIgnoreCase(id)) {
+            if (patient.getIdPatient().equalsIgnoreCase(id)) {
                 return patient;
             }
         }

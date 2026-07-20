@@ -7,7 +7,7 @@ public class PrescriptionManager implements IManager<Prescription> {
 
     private static final String FILE_PATH = "data/prescription.txt";
 
-    private final List<Prescription> prescriptionList;
+    private static List<Prescription> prescriptionList;
 
     public PrescriptionManager() {
         prescriptionList = new ArrayList<>();
@@ -21,7 +21,7 @@ public class PrescriptionManager implements IManager<Prescription> {
             return "Prescription is null.";
         }
 
-        if (findById(prescription.getCodePrescription()) != null) {
+        if (findById(prescription.getIdPrescription()) != null) {
             return "Prescription ID already exists.";
         }
 
@@ -65,25 +65,15 @@ public class PrescriptionManager implements IManager<Prescription> {
         return "Prescription deleted successfully.";
     }
 
-    @Override
-    public void showAll() {
 
-        if (prescriptionList.isEmpty()) {
-            return;
-        }
-
-        for (Prescription prescription : prescriptionList) {
-            System.out.println(prescription.showInfo());
-        }
-    }
 
     // ================= FIND =================
 
-    public Prescription findById(String id) {
+    public static Prescription findById(String id) {
 
         for (Prescription prescription : prescriptionList) {
 
-            if (prescription.getCodePrescription().equalsIgnoreCase(id)) {
+            if (prescription.getIdPrescription().equalsIgnoreCase(id)) {
                 return prescription;
             }
 

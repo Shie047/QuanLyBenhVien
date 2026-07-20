@@ -1,18 +1,18 @@
 package repository;
 public class Patient extends Person {
 
-    private final String codePatient;
+    private final String idPatient;
     private String symptom;
 
     public Patient(String codePatient, String name, int age, String symptom) {
         super(age, name);
-        this.codePatient = codePatient;
+        this.idPatient = codePatient;
         this.symptom = symptom;
     }
 
     // Getter
-    public String getCodePatient() {
-        return codePatient;
+    public String getIdPatient() {
+        return idPatient;
     }
 
     public String getSymptom() {
@@ -26,7 +26,7 @@ public class Patient extends Person {
 
     @Override
     public String showInfo() {
-        return "Code: " + codePatient
+        return "ID: " + idPatient
                 + " | Name: " + getName()
                 + " | Age: " + getAge()
                 + " | Symptom: " + symptom;
@@ -34,7 +34,7 @@ public class Patient extends Person {
 
     // Chuyển đối tượng thành chuỗi để lưu file
     public String toFileLine() {
-        return codePatient + "|"
+        return idPatient + "|"
                 + getName() + "|"
                 + getAge() + "|"
                 + symptom;
