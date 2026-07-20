@@ -19,6 +19,10 @@ public class Prescription {
         this.date = date;
     }
 
+    public static Prescription fromFileLine(String line) {
+        return null;
+    }
+
     // Getter
 
     public String getCodePrescription() {
