@@ -69,11 +69,7 @@ public class PrescriptionDetail {
             return null;
         }
 
-<<<<<<< HEAD
         Medicine medicine = medicineManager.getMedicine(parts[0]);
-=======
-        Medicine medicine = PrescriptionManager.findById(parts[0]).getMedicine();
->>>>>>> 76c6ef64a1e4d49c5262a5e05b498c3637b276fc
 
         if (medicine == null) {
             return null;
