@@ -80,7 +80,7 @@ public class PatientManager implements IManager<Patient> {
     }
 
     // Lưu file
-    private String saveToFile() {
+    public String saveToFile() {
 
         File folder = new File("data");
 
@@ -103,7 +103,7 @@ public class PatientManager implements IManager<Patient> {
     }
 
     // Đọc file
-    private String loadFromFile() {
+    public String loadFromFile() {
 
         File file = new File(FILE_PATH);
 

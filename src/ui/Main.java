@@ -7,9 +7,13 @@ public class Main {
     public static void main(String[] args) {
         DoctorManager DM = new DoctorManager();
         MedicineManager MM = new MedicineManager();
+        PatientManager PM = new PatientManager();
+        PrescriptionManager PRM = new PrescriptionManager();
         Scanner sc = new Scanner(System.in);
         printIfNotNull(DM.loadFile());
         printIfNotNull(MM.loadFile());
+        printIfNotNull(PM.loadFromFile());
+        printIfNotNull(PRM.loadFromFile());
 
         int mainFlag;
         do {
@@ -25,18 +29,20 @@ public class Main {
                     manageDoctors(sc, DM);
                     break;
                 case 2:
-                    System.out.println("Trống");
+                    PatientMenu.showMenu(PM);
                     break;
                 case 3:
                     manageMedicines(sc, MM);
                     break;
                 case 4:
-                    System.out.println("Trống");
+                    PrescriptionMenu.showMenu(PRM, PM, DM, MM);
                     break;
                 case 0:
                     System.out.println("Đang thoát chương trình");
                     printIfNotNull(DM.saveFile());
                     printIfNotNull(MM.saveFile());
+                    printIfNotNull(PM.saveToFile());
+                    printIfNotNull(PRM.saveToFile());
                     break;
             }
         } while (mainFlag != 0);

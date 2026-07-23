@@ -1,4 +1,5 @@
 package repository;
+
 public class Prescription {
 
     private final String idPrescription;
@@ -64,7 +65,7 @@ public class Prescription {
         this.date = date;
     }
 
-    // Hiển thị thông tin
+    // Hiển thị
 
     public String showInfo() {
 

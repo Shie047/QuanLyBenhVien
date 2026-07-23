@@ -58,6 +58,11 @@ public class DoctorManager implements IManager<Doctor> {
     }
 
     @Override
+    public void showAll() {
+
+    }
+
+    @Override
     public List<Doctor> getAll() {
         return listDoctors;
     }

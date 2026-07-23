@@ -1,5 +1,7 @@
 package control;
+
 import repository.*;
+
 public class PrescriptionDetail {
 
     private Medicine medicine;
@@ -13,7 +15,6 @@ public class PrescriptionDetail {
     }
 
     // Getter
-
     public Medicine getMedicine() {
         return medicine;
     }
@@ -27,7 +28,6 @@ public class PrescriptionDetail {
     }
 
     // Setter
-
     public void setMedicine(Medicine medicine) {
         this.medicine = medicine;
     }
@@ -41,25 +41,20 @@ public class PrescriptionDetail {
     }
 
     // Hiển thị
-
     public String showInfo() {
-
         return "Medicine: " + medicine.getName()
                 + " | Quantity: " + quantity
                 + " | Dosage: " + dosage;
     }
 
     // Lưu file
-
     public String toFileLine() {
-
         return medicine.getIdMedicine() + "|"
                 + quantity + "|"
                 + dosage;
     }
 
     // Đọc file
-
     public static PrescriptionDetail fromFileLine(String line,
                                                   MedicineManager medicineManager) {
 
@@ -86,5 +81,4 @@ public class PrescriptionDetail {
     public String toString() {
         return showInfo();
     }
-
 }

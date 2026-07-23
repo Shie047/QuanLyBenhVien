@@ -60,6 +60,11 @@ public class MedicineManager implements IManager<Medicine> {
     }
 
     @Override
+    public void showAll() {
+
+    }
+
+    @Override
     public List<Medicine> getAll() {
         return listMedicines;
     }
@@ -99,5 +104,9 @@ public class MedicineManager implements IManager<Medicine> {
         } catch (Exception e) {
             return "Lỗi khi đọc file thuốc: " + e.getMessage();
         }
+    }
+
+    public Medicine findById(String idMedicine) {
+        return getMedicine(idMedicine);
     }
 }

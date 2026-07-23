@@ -84,7 +84,7 @@ public class PrescriptionManager implements IManager<Prescription> {
 
     // ================= SAVE FILE =================
 
-    private String saveToFile() {
+    public String saveToFile() {
 
         File folder = new File("data");
 
@@ -111,7 +111,7 @@ public class PrescriptionManager implements IManager<Prescription> {
 
     // ================= LOAD FILE =================
 
-    private String loadFromFile() {
+    public String loadFromFile() {
 
         File file = new File(FILE_PATH);
 
