@@ -1,4 +1,5 @@
 package repository;
+<<<<<<< HEAD
 
 import control.DoctorManager;
 import control.MedicineManager;
@@ -40,6 +41,31 @@ public class Prescription {
         Prescription pres = new Prescription(p, d, m, qty, date);
         pres.setIdPrescription(parts[0]);
         return pres;
+=======
+public class Prescription {
+
+    private final String idPrescription;
+    private Patient patient;
+    private Doctor doctor;
+    private Medicine medicine;
+    private String date;
+
+    public Prescription(String idPrescription,
+                        Patient patient,
+                        Doctor doctor,
+                        Medicine medicine,
+                        String date) {
+
+        this.idPrescription = idPrescription;
+        this.patient = patient;
+        this.doctor = doctor;
+        this.medicine = medicine;
+        this.date = date;
+    }
+
+    public static Prescription fromFileLine(String line) {
+        return null;
+>>>>>>> 76c6ef64a1e4d49c5262a5e05b498c3637b276fc
     }
 
     // Getter
@@ -60,20 +86,26 @@ public class Prescription {
         return medicine;
     }
 
+<<<<<<< HEAD
     public int getQuantity() {
         return quantity;
     }
 
+=======
+>>>>>>> 76c6ef64a1e4d49c5262a5e05b498c3637b276fc
     public String getDate() {
         return date;
     }
 
     // Setter
 
+<<<<<<< HEAD
     public void setIdPrescription(String idPrescription) {
         this.idPrescription = idPrescription;
     }
 
+=======
+>>>>>>> 76c6ef64a1e4d49c5262a5e05b498c3637b276fc
     public void setPatient(Patient patient) {
         this.patient = patient;
     }
@@ -86,18 +118,24 @@ public class Prescription {
         this.medicine = medicine;
     }
 
+<<<<<<< HEAD
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
+=======
+>>>>>>> 76c6ef64a1e4d49c5262a5e05b498c3637b276fc
     public void setDate(String date) {
         this.date = date;
     }
 
+<<<<<<< HEAD
     public static void setIdCounter(int maxId) {
         idCounter = maxId + 1;
     }
 
+=======
+>>>>>>> 76c6ef64a1e4d49c5262a5e05b498c3637b276fc
     // Hiển thị thông tin
 
     public String showInfo() {
@@ -106,7 +144,10 @@ public class Prescription {
                 + "\nPatient: " + patient.getName()
                 + "\nDoctor: " + doctor.getName()
                 + "\nMedicine: " + medicine.getName()
+<<<<<<< HEAD
                 + "\nQuantity: " + quantity
+=======
+>>>>>>> 76c6ef64a1e4d49c5262a5e05b498c3637b276fc
                 + "\nDate: " + date;
     }
 
@@ -114,11 +155,18 @@ public class Prescription {
 
     public String toFileLine() {
 
+<<<<<<< HEAD
         return idPrescription + DELIMITER
                 + patient.getIdPatient() + DELIMITER
                 + doctor.getIdDoctor() + DELIMITER
                 + medicine.getIdMedicine() + DELIMITER
                 + quantity + DELIMITER
+=======
+        return idPrescription + "|"
+                + patient.getIdPatient() + "|"
+                + doctor.getIdDoctor() + "|"
+                + medicine.getIdMedicine() + "|"
+>>>>>>> 76c6ef64a1e4d49c5262a5e05b498c3637b276fc
                 + date;
     }
 
