@@ -5,7 +5,7 @@ import java.util.List;
 import repository.*;
 public class DoctorManager implements IManager<Doctor> {
     private ArrayList<Doctor> listDoctors = new ArrayList<>();
-    private final String FILE_NAME = "doctors.txt";
+    private final String FILE_NAME = "data/doctors.txt";
     @Override
     public String add(Doctor doctor) {
         if (doctor == null) {

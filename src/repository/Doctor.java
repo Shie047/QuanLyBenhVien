@@ -33,6 +33,6 @@ public class Doctor extends Person {
 
     @Override
     public String showInfo() {
-        return "Mã Bác Sĩ:" + idDoctor + " Tên: " + getName() + " Tuổi: " + getAge() + " Khoa: " + department;
+        return "Mã Bác Sĩ:" + idDoctor + "| Tên: " + getName() + "| Tuổi: " + getAge() + "| Khoa: " + department;
     }
 }

@@ -10,7 +10,7 @@ public class Input {
             if (input.matches("^[\\p{L}\\s]+$")) {
                 return input;
             }
-            System.out.println("-> Tên không hợp lệ (chỉ nhập chữ cái). Thử lại!");
+            System.out.println("Tên không hợp lệ (chỉ nhập chữ cái). Thử lại!");
         }
     }
 
@@ -33,9 +33,22 @@ public class Input {
             try {
                 int num = Integer.parseInt(sc.nextLine().trim());
                 if (num > 0) return num;
-                System.out.println("-> Giá trị phải > 0!");
+                System.out.println("Giá trị phải > 0!");
             } catch (NumberFormatException e) {
-                System.out.println("-> Vui lòng nhập số nguyên hợp lệ!");
+                System.out.println("Vui lòng nhập số nguyên hợp lệ!");
+            }
+        }
+    }
+
+    public static int inputNonNegativeInt(Scanner sc, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            try {
+                int num = Integer.parseInt(sc.nextLine().trim());
+                if (num >= 0) return num;
+                System.out.println("Giá trị phải >= 0!");
+            } catch (NumberFormatException e) {
+                System.out.println("Vui lòng nhập số nguyên hợp lệ!");
             }
         }
     }
@@ -59,6 +72,17 @@ public class Input {
                 return input;
             }
             System.out.println("Nội dung không hợp lệ (trống hoặc có dấu phẩy).");
+        }
+    }
+
+    public static String inputSymptom(Scanner sc, String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String input = sc.nextLine().trim();
+            if (!input.isEmpty()) {
+                return input;
+            }
+            System.out.println("Phải nhập triệu chứng!");
         }
     }
 

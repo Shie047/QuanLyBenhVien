@@ -69,7 +69,7 @@ public class PrescriptionDetail {
             return null;
         }
 
-        Medicine medicine = PrescriptionManager.findById(parts[0]).getMedicine();
+        Medicine medicine = medicineManager.getMedicine(parts[0]);
 
         if (medicine == null) {
             return null;
