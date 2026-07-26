@@ -2,14 +2,11 @@ package ui;
 
 import java.util.List;
 import java.util.Scanner;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import repository.*;
 import control.*;
 
 public class Main {
 
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     public static void main(String[] args) {
         DoctorManager DM = new DoctorManager();
         MedicineManager MM = new MedicineManager();
@@ -87,13 +84,13 @@ public class Main {
         System.out.println("THÊM BÁC SĨ MỚI");
         String name = Input.inputName(sc, "Nhập tên: ");
         int age = Input.inputAge(sc, "Nhập tuổi: ");
-        while (age < 18) {
-            age = Input.inputAge(sc, "Nhập lại tuổi (bác sĩ phải trên 18): ");
+        while (age < Doctor.MIN_AGE) {
+            age = Input.inputAge(sc, "Nhập lại tuổi (bác sĩ phải từ " + Doctor.MIN_AGE + " trở lên): ");
         }
         System.out.println("Vui lòng chọn phòng ban:");
         System.out.println("1. Khoa Nội | 2. Khoa Ngoại | 3. Khoa Nhi | 4. Khoa Cấp cứu");
         int choiceDepartment = Input.inputByRange(sc, "Chọn (1-4): ", 1, 4);
-        String nameDepartment = nameDepartment(choiceDepartment);
+        String nameDepartment = Doctor.getDepartmentName(choiceDepartment);
 
         System.out.println(DM.add(new Doctor(age, name, nameDepartment)));
     }
@@ -119,20 +116,16 @@ public class Main {
                 System.out.println("Vui lòng chọn phòng ban mới:");
                 System.out.println("1. Khoa Nội | 2. Khoa Ngoại | 3. Khoa Nhi | 4. Khoa Cấp cứu");
                 int deptChoice = Input.inputByRange(sc, "Chọn (1-4): ", 1, 4);
-                newDept = nameDepartment(deptChoice);
+                newDept = Doctor.getDepartmentName(deptChoice);
                 break;
         }
-        Doctor tempDoctor = new Doctor(newAge, newName, newDept);
-        System.out.println(DM.update(FindID, tempDoctor));
-    }
 
-    private static String nameDepartment(int choice) {
-        switch (choice) {
-            case 1: return "Khoa Nội";
-            case 2: return "Khoa Ngoại";
-            case 3: return "Khoa Nhi";
-            case 4: return "Khoa Cấp cứu";
-            default: return "Chưa phân bổ";
+        try {
+            Doctor tempDoctor = new Doctor(newAge, newName, newDept);
+            tempDoctor.setIdDoctor(FindID);
+            System.out.println(DM.update(FindID, tempDoctor));
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -345,38 +338,28 @@ public class Main {
             System.out.println("Không tìm thấy thuốc có mã " + medicineCode + ". Vui lòng nhập lại!");
         }
 
-        int quantity;
         while (true) {
-            quantity = Input.inputNonNegativeInt(sc,
+            int quantity = Input.inputNonNegativeInt(sc,
                     "Nhập số lượng thuốc (tồn kho: " + medicine.getQuantity() + ", nhập 0 để hủy đơn thuốc): ");
             if (quantity == 0) {
                 System.out.println("Đã hủy kê đơn thuốc.");
                 return;
             }
-            if (quantity > medicine.getQuantity()) {
-                System.out.println("Số lượng vượt quá tồn kho hiện có (" + medicine.getQuantity() + "). Vui lòng nhập lại!");
-                continue;
+            try {
+                Prescription prescription = PRM.addPrescription(patient, doctor, medicine, quantity);
+                System.out.println("Prescription added successfully.");
+                System.out.println("Mã đơn thuốc được cấp: " + prescription.getIdPrescription());
+                return;
+            } catch (IllegalArgumentException | IllegalStateException e) {
+                System.out.println(e.getMessage() + " Vui lòng nhập lại!");
             }
-            break;
-        }
-
-        String date = LocalDate.now().format(DATE_FORMAT);
-        Prescription prescription = new Prescription(patient, doctor, medicine, quantity, date);
-
-        String result = PRM.add(prescription);
-        System.out.println(result);
-        if (result.contains("successfully")) {
-            System.out.println("Mã đơn thuốc được cấp: " + prescription.getIdPrescription());
-            Medicine updatedMedicine = new Medicine(medicine.getIdMedicine(), medicine.getName(),
-                    medicine.getUnitPrice(), medicine.getQuantity() - quantity);
-            MM.update(medicine.getIdMedicine(), updatedMedicine);
         }
     }
 
     private static void updatePrescription(Scanner sc, PrescriptionManager PRM, PatientManager PM, DoctorManager DM, MedicineManager MM) {
         String code = Input.inputCode(sc, "Nhập mã đơn thuốc cần sửa (VD: DT1): ");
         Prescription old = PRM.findById(code);
-        if (old == null) {
+        if (old == null)  {
             System.out.println("Không tìm thấy đơn thuốc có mã " + code);
             return;
         }
@@ -409,42 +392,20 @@ public class Main {
             System.out.println("Không tìm thấy thuốc có mã " + medicineCode + ". Vui lòng nhập lại!");
         }
 
-        int quantity;
         while (true) {
-            int available = medicine.getQuantity();
-            if (medicine.getIdMedicine().equals(old.getMedicine().getIdMedicine())) {
-                available += old.getQuantity();
-            }
-
-            quantity = Input.inputNonNegativeInt(sc,
+            int available = PRM.getAvailableQuantity(old, medicine);
+            int quantity = Input.inputNonNegativeInt(sc,
                     "Nhập số lượng thuốc (Tổng khả dụng: " + available + ", nhập 0 để hủy sửa đơn thuốc): ");
             if (quantity == 0) {
                 System.out.println("Đã hủy sửa đơn thuốc.");
                 return;
             }
-            if (quantity > available) {
-                System.out.println("Số lượng vượt quá tổng khả dụng (" + available + "). Vui lòng nhập lại!");
-                continue;
-            }
-            break;
-        }
-
-        String date = LocalDate.now().format(DATE_FORMAT);
-        Prescription tempPrescription = new Prescription(patient, doctor, medicine, quantity, date);
-        String result = PRM.update(code, tempPrescription);
-        System.out.println(result);
-        if (result.contains("successfully")) {
-            Medicine oldMedInDb = MM.getMedicine(old.getMedicine().getIdMedicine());
-            if (oldMedInDb != null) {
-                Medicine refundedMed = new Medicine(oldMedInDb.getIdMedicine(), oldMedInDb.getName(),
-                        oldMedInDb.getUnitPrice(), oldMedInDb.getQuantity() + old.getQuantity());
-                MM.update(oldMedInDb.getIdMedicine(), refundedMed);
-            }
-            Medicine newMedInDb = MM.getMedicine(medicine.getIdMedicine());
-            if (newMedInDb != null) {
-                Medicine deductedMed = new Medicine(newMedInDb.getIdMedicine(), newMedInDb.getName(),
-                        newMedInDb.getUnitPrice(), newMedInDb.getQuantity() - quantity);
-                MM.update(newMedInDb.getIdMedicine(), deductedMed);
+            try {
+                PRM.editPrescription(code, patient, doctor, medicine, quantity);
+                System.out.println("Prescription updated successfully.");
+                return;
+            } catch (IllegalArgumentException | IllegalStateException e) {
+                System.out.println(e.getMessage() + " Vui lòng nhập lại!");
             }
         }
     }
