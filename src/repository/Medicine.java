@@ -64,10 +64,10 @@ public class Medicine {
     }
 
     public String showInfo() {
-        return "ID: " + idMedicine
-                + " | Name: " + name
-                + " | Price: " + unitPrice
-                + " | Quantity: " + quantity;
+        return "Mã: " + idMedicine
+                + " | Tên: " + name
+                + " | Giá: " + unitPrice
+                + " | Số lượng: " + quantity;
     }
 
     public String toFileLine() {

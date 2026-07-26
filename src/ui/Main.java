@@ -347,7 +347,7 @@ public class Main {
             }
             try {
                 Prescription prescription = PRM.addPrescription(patient, doctor, medicine, quantity);
-                System.out.println("Prescription added successfully.");
+                System.out.println("Đã thêm đơn thuốc thành công.");
                 System.out.println("Mã đơn thuốc được cấp: " + prescription.getIdPrescription());
                 return;
             } catch (IllegalArgumentException | IllegalStateException e) {
@@ -402,7 +402,7 @@ public class Main {
             }
             try {
                 PRM.editPrescription(code, patient, doctor, medicine, quantity);
-                System.out.println("Prescription updated successfully.");
+                System.out.println("Đã cập nhật đơn thuốc thành công.");
                 return;
             } catch (IllegalArgumentException | IllegalStateException e) {
                 System.out.println(e.getMessage() + " Vui lòng nhập lại!");

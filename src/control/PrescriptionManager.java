@@ -7,6 +7,7 @@ import repository.*;
 
 public class PrescriptionManager implements IManager<Prescription> {
     private static final String FILE_PATH = "data/prescriptions.txt";
+    private static final String SAVE_FAILED = "Lưu thất bại.";
     private List<Prescription> prescriptionList;
     private PatientManager patientManager;
     private DoctorManager doctorManager;
@@ -22,57 +23,57 @@ public class PrescriptionManager implements IManager<Prescription> {
     @Override
     public String add(Prescription prescription) {
         if (prescription == null) {
-            return "Prescription is null.";
+            return "Đơn thuốc không hợp lệ.";
         }
         if (findById(prescription.getIdPrescription()) != null) {
-            return "Prescription ID already exists.";
+            return "Mã đơn thuốc đã tồn tại.";
         }
         prescriptionList.add(prescription);
         String saveResult = saveToFile();
-        if (saveResult.equals("Save failed.")) {
+        if (saveResult.equals(SAVE_FAILED)) {
             prescriptionList.remove(prescription);
-            return "Failed to save prescription to database.";
+            return "Lưu đơn thuốc vào cơ sở dữ liệu thất bại.";
         }
 
-        return "Prescription added successfully.";
+        return "Đã thêm đơn thuốc thành công.";
     }
 
     @Override
     public String update(String id, Prescription newPrescription) {
         Prescription oldPrescription = findById(id);
         if (oldPrescription == null) {
-            return "Prescription not found.";
+            return "Không tìm thấy đơn thuốc.";
         }
 
         int index = prescriptionList.indexOf(oldPrescription);
         newPrescription.setIdPrescription(oldPrescription.getIdPrescription());
         prescriptionList.set(index, newPrescription);
         String saveResult = saveToFile();
-        if (saveResult.equals("Save failed.")) {
+        if (saveResult.equals(SAVE_FAILED)) {
             prescriptionList.set(index, oldPrescription);
-            return "Failed to update prescription in database.";
+            return "Cập nhật đơn thuốc trong cơ sở dữ liệu thất bại.";
         }
 
-        return "Prescription updated successfully.";
+        return "Đã cập nhật đơn thuốc thành công.";
     }
 
     @Override
     public String delete(String id) {
         Prescription prescription = findById(id);
         if (prescription == null) {
-            return "Prescription not found.";
+            return "Không tìm thấy đơn thuốc.";
         }
 
         int index = prescriptionList.indexOf(prescription);
         prescriptionList.remove(index);
 
         String saveResult = saveToFile();
-        if (saveResult.equals("Save failed.")) {
+        if (saveResult.equals(SAVE_FAILED)) {
             prescriptionList.add(index, prescription);
-            return "Failed to delete prescription from database.";
+            return "Xóa đơn thuốc khỏi cơ sở dữ liệu thất bại.";
         }
 
-        return "Prescription deleted successfully.";
+        return "Đã xóa đơn thuốc thành công.";
     }
 
 
@@ -92,7 +93,7 @@ public class PrescriptionManager implements IManager<Prescription> {
 
         Prescription prescription = new Prescription(patient, doctor, medicine, quantity, Prescription.today());
         String result = add(prescription);
-        if (!"Prescription added successfully.".equals(result)) {
+        if (!"Đã thêm đơn thuốc thành công.".equals(result)) {
             throw new IllegalStateException(result);
         }
 
@@ -116,7 +117,7 @@ public class PrescriptionManager implements IManager<Prescription> {
 
         Prescription temp = new Prescription(patient, doctor, medicine, quantity, Prescription.today());
         String result = update(id, temp);
-        if (!"Prescription updated successfully.".equals(result)) {
+        if (!"Đã cập nhật đơn thuốc thành công.".equals(result)) {
             throw new IllegalStateException(result);
         }
 
@@ -162,9 +163,9 @@ public class PrescriptionManager implements IManager<Prescription> {
                 bw.write(prescription.toFileLine());
                 bw.newLine();
             }
-            return "Saved successfully.";
+            return "Đã lưu thành công.";
         } catch (IOException e) {
-            return "Save failed.";
+            return SAVE_FAILED;
         }
     }
 
@@ -173,7 +174,7 @@ public class PrescriptionManager implements IManager<Prescription> {
     private String loadFromFile() {
         File file = new File(FILE_PATH);
         if (!file.exists()) {
-            return "File not found.";
+            return "Không tìm thấy file.";
         }
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
@@ -192,9 +193,9 @@ public class PrescriptionManager implements IManager<Prescription> {
                     }
                 }
             }
-            return "Loaded successfully.";
+            return "Đã tải thành công.";
         } catch (IOException e) {
-            return "Load failed.";
+            return "Tải thất bại.";
         }
     }
 

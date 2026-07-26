@@ -110,12 +110,12 @@ public class Prescription {
 
     public String showInfo() {
 
-        return "Prescription ID: " + idPrescription
-                + "\nPatient: " + patient.getName()
-                + "\nDoctor: " + doctor.getName()
-                + "\nMedicine: " + medicine.getName()
-                + "\nQuantity: " + quantity
-                + "\nDate: " + date;
+        return "Mã đơn thuốc: " + idPrescription
+                + "\nBệnh nhân: " + patient.getName()
+                + "\nBác sĩ: " + doctor.getName()
+                + "\nThuốc: " + medicine.getName()
+                + "\nSố lượng: " + quantity
+                + "\nNgày kê: " + date;
     }
 
     // Lưu file
