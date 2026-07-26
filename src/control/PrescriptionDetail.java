@@ -44,9 +44,9 @@ public class PrescriptionDetail {
 
     public String showInfo() {
 
-        return "Medicine: " + medicine.getName()
-                + " | Quantity: " + quantity
-                + " | Dosage: " + dosage;
+        return "Thuốc: " + medicine.getName()
+                + " | Số lượng: " + quantity
+                + " | Liều dùng: " + dosage;
     }
 
     // Lưu file

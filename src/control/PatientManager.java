@@ -8,6 +8,7 @@ import repository.*;
 public class PatientManager implements IManager<Patient> {
 
     private static final String FILE_PATH = "data/patients.txt";
+    private static final String SAVE_FAILED = "Lưu thất bại.";
 
     private final List<Patient> patientList;
 
@@ -20,20 +21,20 @@ public class PatientManager implements IManager<Patient> {
     public String add(Patient patient) {
 
         if (patient == null) {
-            return "Patient is null.";
+            return "Bệnh nhân không hợp lệ.";
         }
 
         if (findById(patient.getIdPatient()) != null) {
-            return "Patient ID already exists.";
+            return "Mã bệnh nhân đã tồn tại.";
         }
         patientList.add(patient);
         String saveResult = saveToFile();
-        if (saveResult.equals("Save failed.")) {
+        if (saveResult.equals(SAVE_FAILED)) {
             patientList.remove(patient);
-            return "Failed to save patient to database.";
+            return "Lưu bệnh nhân vào cơ sở dữ liệu thất bại.";
         }
 
-        return "Patient added successfully.";
+        return "Đã thêm bệnh nhân thành công.";
     }
 
     @Override
@@ -42,7 +43,7 @@ public class PatientManager implements IManager<Patient> {
         Patient patient = findById(id);
 
         if (patient == null) {
-            return "Patient not found.";
+            return "Không tìm thấy bệnh nhân.";
         }
         String oldName = patient.getName();
         int oldAge = patient.getAge();
@@ -52,14 +53,14 @@ public class PatientManager implements IManager<Patient> {
         patient.setSymptom(newPatient.getSymptom());
 
         String saveResult = saveToFile();
-        if (saveResult.equals("Save failed.")) {
+        if (saveResult.equals(SAVE_FAILED)) {
             patient.setName(oldName);
             patient.setAge(oldAge);
             patient.setSymptom(oldSymptom);
-            return "Failed to update patient in database.";
+            return "Cập nhật bệnh nhân trong cơ sở dữ liệu thất bại.";
         }
 
-        return "Patient updated successfully.";
+        return "Đã cập nhật bệnh nhân thành công.";
     }
 
     @Override
@@ -68,18 +69,18 @@ public class PatientManager implements IManager<Patient> {
         Patient patient = findById(id);
 
         if (patient == null) {
-            return "Patient not found.";
+            return "Không tìm thấy bệnh nhân.";
         }
 
         patientList.remove(patient);
 
         String saveResult = saveToFile();
-        if (saveResult.equals("Save failed.")) {
+        if (saveResult.equals(SAVE_FAILED)) {
             patientList.add(patient);
-            return "Failed to delete patient from database.";
+            return "Xóa bệnh nhân khỏi cơ sở dữ liệu thất bại.";
         }
 
-        return "Patient deleted successfully.";
+        return "Đã xóa bệnh nhân thành công.";
     }
 
     // Tìm bệnh nhân theo ID
@@ -105,10 +106,10 @@ public class PatientManager implements IManager<Patient> {
                 bw.write(patient.toFileLine());
                 bw.newLine();
             }
-            return "Saved successfully.";
+            return "Đã lưu thành công.";
 
         } catch (IOException e) {
-            return "Save failed.";
+            return SAVE_FAILED;
         }
     }
 
@@ -117,7 +118,7 @@ public class PatientManager implements IManager<Patient> {
         File file = new File(FILE_PATH);
 
         if (!file.exists()) {
-            return "File not found.";
+            return "Không tìm thấy file.";
         }
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
@@ -147,10 +148,10 @@ public class PatientManager implements IManager<Patient> {
 
             Patient.setIdCounter(maxId);
 
-            return "Loaded successfully.";
+            return "Đã tải thành công.";
 
         } catch (IOException e) {
-            return "Load failed.";
+            return "Tải thất bại.";
         }
     }
     public List<Patient> getAll() {
