@@ -3,6 +3,8 @@ package repository;
 import control.DoctorManager;
 import control.MedicineManager;
 import control.PatientManager;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Prescription {
 
@@ -14,6 +16,12 @@ public class Prescription {
     private String date;
     private static int idCounter = 1;
     private static final String DELIMITER = ",";
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+
+    public static String today() {
+        return LocalDate.now().format(DATE_FORMAT);
+    }
     public Prescription(Patient patient, Doctor doctor, Medicine medicine, int quantity, String date) {
 
         this.idPrescription = "DT" + idCounter;
